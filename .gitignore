@@ -1,0 +1,20 @@
+#all ignore
+/*
+#/.**
+
+# not ignore
+!/.bash_logout
+!/.bashrc
+!/.gitconfig
+!/.gnupg/gpg-agent.conf
+!/.p10k.zsh
+!/.profile
+!/.vimrc
+!/.zshrc
+
+!/setup.sh
+
+!/README.md
+!/LICENSE
+!.gitignore
+!.gitkeep

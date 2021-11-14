@@ -1,0 +1,12 @@
+[user]
+	name = Taishi Okazaki
+	email = d3v4@d3v4.jp
+	signingkey = 63127A0197E50A2E
+[core]
+	editer = vim
+[init]
+	defaultBranch = main
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = true
