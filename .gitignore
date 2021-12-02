@@ -6,7 +6,9 @@
 !/.bash_logout
 !/.bashrc
 !/.gitconfig
+!/.gnupg
 !/.gnupg/gpg-agent.conf
+!/.gnupg/gpg.conf
 !/.p10k.zsh
 !/.profile
 !/.vimrc
