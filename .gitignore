@@ -1,6 +1,8 @@
 #all ignore
 /*
+#/.*
 #/.**
+*.swp
 
 # not ignore
 !/.bash_logout
