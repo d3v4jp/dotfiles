@@ -24,6 +24,8 @@ ln -sf ~/dotfiles/.vimrc ~/.vimrc
 
 #.ssh
 if [ ! -e ~/.ssh/authorized_keys ]; then
+    mkdir ~/.ssh
+    mkdir chmod 700 ~/.ssh
     wget https://github.com/d3v4jp.keys -qO - >> ~/.ssh/authorized_keys
     chmod 600 ~/.ssh/authorized_keys
 fi
