@@ -1,7 +1,6 @@
 # zplug install check
 if [[ ! -d ~/.zplug ]];then
-  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh
-  exec $SHELL -l
+  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh || exec zsh -l
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
