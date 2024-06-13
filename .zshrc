@@ -55,32 +55,24 @@ zplug load
 
 #WSL?
 if [[ "$(uname -r)" == *microsoft* ]]; then
-  #XcXsrv
-  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0
+  WIN_USERNAME="d3v4"
 
-  #yubikey
-  #ssh
-  export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
-  if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
-    rm -f "$SSH_AUTH_SOCK"
-    wsl2_ssh_pageant_bin="$HOME/.ssh/wsl2-ssh-pageant.exe"
-    if test -x "$wsl2_ssh_pageant_bin"; then
-      (setsid nohup socat UNIX-LISTEN:"$SSH_AUTH_SOCK,fork" EXEC:"$wsl2_ssh_pageant_bin" >/dev/null 2>&1 &)
-    else
-      echo >&2 "WARNING: $wsl2_ssh_pageant_bin is not executable."
-    fi
-    unset wsl2_ssh_pageant_bin
+  USER_BIN_DIR="/mnt/c/Users/${WIN_USERNAME}/bin/ssh"
+  WIN_GPG_DIR="C:/Users/${WIN_USERNAME}/AppData/Local/gnupg"
+  WIN_HOME_DIR="/mnt/c/Users/${WIN_USERNAME}"
+  WSL_GPG_DIR="$(gpgconf --list-dirs socketdir)"
+
+  if ! pgrep -f 'socat.*gpg-agent.*npiperelay' >/dev/null; then
+    rm -f "${WSL_GPG_DIR}/S.gpg-agent"
+    setsid nohup socat \
+      UNIX-LISTEN:"${WSL_GPG_DIR}/S.gpg-agent,fork" \
+      EXEC:"${USER_BIN_DIR}"'/npiperelay.exe -ei -ep -s -a "'"${WIN_GPG_DIR}"'/S.gpg-agent",nofork' >/dev/null 2>&1 &
   fi
-  #gpg
-  export GPG_AGENT_SOCK="$HOME/.gnupg/S.gpg-agent"
-  if ! ss -a | grep -q "$GPG_AGENT_SOCK"; then
-    rm -rf "$GPG_AGENT_SOCK"
-    wsl2_ssh_pageant_bin="$HOME/.ssh/wsl2-ssh-pageant.exe"
-    if test -x "$wsl2_ssh_pageant_bin"; then
-      (setsid nohup socat UNIX-LISTEN:"$GPG_AGENT_SOCK,fork" EXEC:"$wsl2_ssh_pageant_bin --gpg S.gpg-agent" >/dev/null 2>&1 &)
-    else
-      echo >&2 "WARNING: $wsl2_ssh_pageant_bin is not executable."
-    fi
-    unset wsl2_ssh_pageant_bin
+  export SSH_AUTH_SOCK="/tmp/wsl2-ssh-pagent.sock"
+  if ! pgrep -f 'socat.*wsl2-ssh-pagent.*' >/dev/null; then
+    rm -f "${SSH_AUTH_SOCK}"
+    setsid nohup socat \
+      UNIX-LISTEN:"${SSH_AUTH_SOCK},fork" \
+      EXEC:"${USER_BIN_DIR}"'/wsl2-ssh-pageant.exe' >/dev/null 2>&1 &
   fi
 fi
